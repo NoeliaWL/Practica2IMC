@@ -27,14 +27,14 @@ using namespace std;
 int main(int argc, char **argv) {
 	// Process the command line
     bool Tflag = 0, wflag = 0, pflag = 0, tflag = 0, iflag = 0, lflag = 0, hflag = 0, eflag = 0, mflag = 0, oflag = 0, fflag = 0, sflag = 0, nflag = 0;
-    char *Tvalue = NULL, *wvalue = NULL, *tvalue = NULL, *ivalue = NULL, *lvalue = NULL, *hvalue = NULL, *evalue = NULL, *mvalue = NULL, *fvalue = NULL, *svalue = NULL;
+    char *Tvalue = NULL, *wvalue = NULL, *tvalue = NULL, *ivalue = NULL, *lvalue = NULL, *hvalue = NULL, *evalue = NULL, *mvalue = NULL, *fvalue = NULL;
     int c;
 
     opterr = 0;
 
     // a: Option that requires an argument
     // a:: The argument required is optional
-    while ((c = getopt(argc, argv, "T:w:t:i:l:h:e:m:f:s:o::n::p")) != -1)
+    while ((c = getopt(argc, argv, "T:w:t:i:l:h:e:m:f:s::o::n::p")) != -1)
     {
 
         // The parameters needed for using the optional prediction mode of Kaggle have been included.
@@ -77,7 +77,6 @@ int main(int argc, char **argv) {
                 break;
             case 's':
                 sflag = true;
-                svalue = optarg;
                 break;
             case 'n':
                 nflag = true;
@@ -90,7 +89,7 @@ int main(int argc, char **argv) {
                 pflag = true;
                 break;
             case '?':
-                if (optopt == 'T' || optopt == 'w' || optopt == 'p' || optopt == 't' || optopt == 'i' || optopt == 'l' || optopt == 'h' || optopt == 'e' || optopt == 'm' || optopt == 'f' || optopt == 's')
+                if (optopt == 'T' || optopt == 'w' || optopt == 'p' || optopt == 't' || optopt == 'i' || optopt == 'l' || optopt == 'h' || optopt == 'e' || optopt == 'm' || optopt == 'f')
                     fprintf (stderr, "The option -%c requires an argument.\n", optopt);
                 else if (isprint (optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -124,7 +123,7 @@ int main(int argc, char **argv) {
         }
 
         if(sflag){
-            mlp.outputFunction = atof(svalue);
+            mlp.outputFunction = 1;
         }
 
     	// Type of error considered
