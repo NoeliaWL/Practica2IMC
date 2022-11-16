@@ -45,7 +45,7 @@ int MultilayerPerceptron::initialize(int nl, int npl[]) {
 		layers[i].neurons = new Neuron[layers[i].nOfNeurons];
 
 		for(int j=0; j<layers[i].nOfNeurons; j++){
-			if(i == 0 or (i == nOfLayers-1 and j == layers[nOfLayers-1].nOfNeurons-1)){
+			if(i == 0 or (i == nOfLayers-1 and j == layers[nOfLayers-1].nOfNeurons-1 and outputFunction == 1)){
 				layers[i].neurons[j].w = NULL;
 				layers[i].neurons[j].deltaW = NULL;
 				layers[i].neurons[j].lastDeltaW = NULL;
@@ -94,7 +94,6 @@ void MultilayerPerceptron::randomWeights() {
 					}
 					else{
 						layers[i].neurons[j].w[k] = randomDouble(-1, 1);
-						//cout<<"layers["<<i<<"].neurons["<<j<<"].w["<<k<<"]"<<layers[i].neurons[j].w[k]<<endl;
 						layers[i].neurons[j].deltaW[k] = 0.0;
 						layers[i].neurons[j].lastDeltaW[k] = 0.0;
 						layers[i].neurons[j].wCopy[k] = 0.0;
@@ -109,7 +108,6 @@ void MultilayerPerceptron::randomWeights() {
 					}
 					else{
 						layers[i].neurons[j].w[k] = randomDouble(-1, 1);
-						//cout<<"layers["<<i<<"].neurons["<<j<<"].w["<<k<<"]"<<layers[i].neurons[j].w[k]<<endl;
 						layers[i].neurons[j].deltaW[k] = 0.0;
 						layers[i].neurons[j].lastDeltaW[k] = 0.0;
 						layers[i].neurons[j].wCopy[k] = 0.0;
@@ -237,7 +235,7 @@ double MultilayerPerceptron::obtainError(double* target, int errorFunction) {
 		error /= layers[nOfLayers-1].nOfNeurons;
 	}
 
-	return error;
+	return (double) error;
 }
 
 
@@ -296,7 +294,7 @@ void MultilayerPerceptron::backpropagateError(double* target, int errorFunction)
 // ------------------------------
 // Accumulate the changes produced by one pattern and save them in deltaW
 void MultilayerPerceptron::accumulateChange() {
-	for(int h=0; h<nOfLayers; h++){
+	for(int h=1; h<nOfLayers; h++){
 		for(int j=0; j<layers[h].nOfNeurons; j++){
 			if(h != nOfLayers-1 and j != layers[nOfLayers-1].nOfNeurons-1){
 				for(int i=1; i<layers[h-1].nOfNeurons+1; i++){
@@ -379,15 +377,11 @@ void MultilayerPerceptron::performEpoch(double* input, double* target, int error
 	feedInputs(input);
 	forwardPropagate();
 	backpropagateError(target, errorFunction);
-	cout<<"5entra"<<endl;
 	accumulateChange();
-	cout<<"6entra"<<endl;
 
 	if(online){
 		weightAdjustment();
 	}
-
-	cout<<"fin performEpoch"<<endl;
 }
 
 // ------------------------------
