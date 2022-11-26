@@ -416,6 +416,39 @@ double MultilayerPerceptron::test(Dataset* dataset, int errorFunction) {
 // ------------------------------
 // Test the network with a dataset and return the CCR
 double MultilayerPerceptron::testClassification(Dataset* dataset) {
+	double CCR = 0.0;
+	int real = 0, obtenida = 0;
+	double *salidas = new double[layers[nOfLayers-1].nOfNeurons];
+	double maximo = 0.0, maximo2 = 0.0;
+
+	for(int i=0; i<dataset->nOfPatterns; i++){
+		feedInputs(dataset->inputs[i]);
+		forwardPropagate();
+		getOutputs(salidas);
+
+		maximo = salidas[0];
+		maximo2 = dataset->outputs[i][0];
+		for(int j=1; j<dataset->nOfOutputs; j++){
+			if(maximo < salidas[j]){
+				maximo = salidas[j];
+				obtenida = j;
+			}
+
+			if(maximo2 < dataset->outputs[i][j]){
+				maximo2 = dataset->outputs[i][j];
+				real = j;
+			}
+		}
+
+		if(real == obtenida){
+			CCR++;
+		}
+	}
+	delete[] salidas;
+
+	return ((double) CCR / dataset->nOfPatterns) * 100;
+	
+	/*
 	int CCR = 0.0;
 	double *salidas = new double[layers[nOfLayers-1].nOfNeurons];
 
@@ -443,6 +476,7 @@ double MultilayerPerceptron::testClassification(Dataset* dataset) {
 	CCR = (double) 100 * (CCR / dataset->nOfPatterns);
 
 	return CCR;
+	*/
 }
 
 

@@ -234,19 +234,19 @@ int main(int argc, char **argv) {
 
             trainVarianzaError = trainVarianzaError + trainRangoError;
             testVArianzaError = testVArianzaError + testRangoError;
-            trainVarianzaCCR = trainVarianzaCCR + trainRangoCCR;
-            testVarianzaCCR = testVarianzaCCR + testRangoCCR;
+            //trainVarianzaCCR = trainVarianzaCCR + trainRangoCCR;
+            //testVarianzaCCR = testVarianzaCCR + testRangoCCR;
         }
 
         trainVarianzaError = trainVarianzaError / 5;
         testVArianzaError = testVArianzaError / 5;
-        trainVarianzaCCR = trainVarianzaCCR / 5;
-        testVarianzaCCR = testVarianzaCCR / 5;
+        //trainVarianzaCCR = trainVarianzaCCR / 5;
+        //testVarianzaCCR = testVarianzaCCR / 5;
 
         trainStdError = sqrt(trainVarianzaError);
         testStdError = sqrt(testVArianzaError);
-        trainStdCCR = sqrt(trainVarianzaCCR);
-        testStdCCR = sqrt(testVarianzaCCR);
+        trainStdCCR = sqrt(trainRangoCCR/5);
+        testStdCCR = sqrt(testRangoCCR/5);
 
 		cout << "WE HAVE FINISHED WITH ALL THE SEEDS" << endl;
 
