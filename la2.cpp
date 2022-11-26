@@ -148,6 +148,15 @@ int main(int argc, char **argv) {
             testDataset = readData(tvalue);
         }
 
+        //Normalizar datos
+        if(nflag){
+            minMaxScalerDataSetInputs(trainDataset, -1.0, 1.0, minDatasetInputs(trainDataset), maxDatasetInputs(trainDataset));
+            minMaxScalerDataSetOutputs(trainDataset, 0.0, 1.0, minDatasetOutputs(trainDataset), maxDatasetOutputs(trainDataset));
+
+            minMaxScalerDataSetInputs(testDataset, -1.0, 1.0, minDatasetInputs(testDataset), maxDatasetInputs(testDataset));
+            minMaxScalerDataSetOutputs(trainDataset, 0.0, 1.0, minDatasetOutputs(trainDataset), maxDatasetOutputs(trainDataset));
+        }
+
         // Initialize topology vector
         int layers = 1;
         if(lflag and atoi(lvalue) > 0){
@@ -197,6 +206,47 @@ int main(int argc, char **argv) {
 		double testAverageCCR = 0, testStdCCR = 0;
 
         // Obtain training and test averages and standard deviations
+        for(int i=0; i<5; i++){
+            trainAverageError += trainErrors[i];
+            testAverageError += testErrors[i];
+            trainAverageCCR += trainCCRs[i];
+            testAverageCCR += testCCRs[i];
+        }
+
+        trainAverageError /= 5;
+        testAverageError /= 5;
+        trainAverageCCR /= 5;
+        testAverageCCR /= 5;
+
+        double trainVarianzaError = 0, testVArianzaError = 0, trainVarianzaCCR = 0, testVarianzaCCR = 0;
+        double trainRangoError = 0, testRangoError = 0, trainRangoCCR = 0, testRangoCCR = 0;
+
+        for(int i=0; i<5; i++){
+            trainRangoError = 0;
+            testRangoError = 0;
+            trainRangoCCR = 0;
+            testRangoCCR = 0;
+
+            trainRangoError = pow(trainErrors[i] - trainAverageError, 2);
+            testRangoError = pow(testErrors[i] - testAverageError, 2);
+            trainRangoCCR = pow(trainCCRs[i] - trainAverageCCR, 2);
+            testRangoCCR = pow(testCCRs[i] - testAverageCCR, 2);
+
+            trainVarianzaError = trainVarianzaError + trainRangoError;
+            testVArianzaError = testVArianzaError + testRangoError;
+            trainVarianzaCCR = trainVarianzaCCR + trainRangoCCR;
+            testVarianzaCCR = testVarianzaCCR + testRangoCCR;
+        }
+
+        trainVarianzaError = trainVarianzaError / 5;
+        testVArianzaError = testVArianzaError / 5;
+        trainVarianzaCCR = trainVarianzaCCR / 5;
+        testVarianzaCCR = testVarianzaCCR / 5;
+
+        trainStdError = sqrt(trainVarianzaError);
+        testStdError = sqrt(testVArianzaError);
+        trainStdCCR = sqrt(trainVarianzaCCR);
+        testStdCCR = sqrt(testVarianzaCCR);
 
 		cout << "WE HAVE FINISHED WITH ALL THE SEEDS" << endl;
 

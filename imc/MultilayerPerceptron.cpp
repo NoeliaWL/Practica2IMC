@@ -40,12 +40,12 @@ int MultilayerPerceptron::initialize(int nl, int npl[]) {
 	nOfLayers = nl;
 	layers = new Layer[nOfLayers];
 	
-	cout << "-->" << nOfLayers << endl;
+	//cout << "-->" << nOfLayers << endl;
 
 	for(int i=0; i<nOfLayers; i++){
 		layers[i].nOfNeurons = npl[i];
 		layers[i].neurons = new Neuron[layers[i].nOfNeurons];
-	    cout << "--->" << nOfLayers << " " << i << endl;
+	    //cout << "--->" << nOfLayers << " " << i << endl;
 
 		for(int j=0; j<layers[i].nOfNeurons; j++){
 			if(i == 0 or (i == nOfLayers-1 and j == layers[nOfLayers-1].nOfNeurons-1 and outputFunction == 1)){

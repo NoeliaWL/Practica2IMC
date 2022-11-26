@@ -1,0 +1,11 @@
+@relation train-xor
+
+@attribute a numeric
+@attribute b numeric
+@attribute class {0,1}
+
+@data
+1,-1,1
+-1,-1,0
+-1,1,1
+1,1,0
