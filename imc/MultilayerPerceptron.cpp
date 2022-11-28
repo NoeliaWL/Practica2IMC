@@ -422,6 +422,8 @@ double MultilayerPerceptron::testClassification(Dataset* dataset) {
 	double maximo = 0.0, maximo2 = 0.0;
 
 	for(int i=0; i<dataset->nOfPatterns; i++){
+		real = 0;
+		obtenida = 0;
 		feedInputs(dataset->inputs[i]);
 		forwardPropagate();
 		getOutputs(salidas);
@@ -447,36 +449,6 @@ double MultilayerPerceptron::testClassification(Dataset* dataset) {
 	delete[] salidas;
 
 	return ((double) CCR / dataset->nOfPatterns) * 100;
-	
-	/*
-	int CCR = 0.0;
-	double *salidas = new double[layers[nOfLayers-1].nOfNeurons];
-
-	for(int i=0; i<dataset->nOfPatterns; i++){
-		feedInputs(dataset->inputs[i]);
-		forwardPropagate();
-		getOutputs(salidas);
-
-	    int maxIndexSalidaReal = 0, maxIndexSalidaObtenida = 0;
-		for(int j=1; j<dataset->nOfOutputs; j++){
-			if(dataset->outputs[i][j] == 1){
-				maxIndexSalidaReal = j;
-			}
-
-			if(salidas[j] > salidas[maxIndexSalidaObtenida]){
-				maxIndexSalidaObtenida = j;
-			}
-		}
-
-		if(maxIndexSalidaReal == maxIndexSalidaObtenida){
-			CCR++;
-		}
-	}
-
-	CCR = (double) 100 * (CCR / dataset->nOfPatterns);
-
-	return CCR;
-	*/
 }
 
 
